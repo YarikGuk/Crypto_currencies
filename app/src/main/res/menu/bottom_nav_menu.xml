@@ -7,9 +7,10 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_setting"
         android:icon="@drawable/ic_settings"
-        android:title="@string/settings" />
+        android:iconTint="@color/white"
+        android:title="@string/title_settings" />
 
 
 </menu>
