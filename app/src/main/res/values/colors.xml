@@ -10,4 +10,5 @@
     <color name="primary">#2ED25C</color>
     <color name="second_anim_color">#FBC11B</color>
     <color name="gray_200">#C4C4C4</color>
+    <color name="gray_light">#33000000</color>
 </resources>
