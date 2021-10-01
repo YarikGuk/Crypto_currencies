@@ -1,16 +1,12 @@
 package by.huk.crypto_currencies.ui.home
 
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import by.huk.crypto_currencies.R
 import by.huk.crypto_currencies.databinding.FragmentHomeBinding
 
@@ -37,10 +33,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+            binding.anim.setBackgroundResource(R.drawable.custom_progressbar_anim)
+        val anim = binding.anim.background as AnimatedVectorDrawable
+        anim.start()
 
-        binding.testBtn.setOnClickListener {
-
-        }
     }
 
     override fun onDestroyView() {

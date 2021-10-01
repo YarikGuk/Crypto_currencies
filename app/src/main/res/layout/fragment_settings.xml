@@ -34,7 +34,6 @@
         android:background="@color/gray_light"
         android:src="@drawable/selector_camera"
         android:clickable="true"
-
         android:padding="@dimen/margin_double"
         app:layout_constraintBottom_toBottomOf="@+id/user_photo"
         app:layout_constraintEnd_toEndOf="@+id/user_photo"

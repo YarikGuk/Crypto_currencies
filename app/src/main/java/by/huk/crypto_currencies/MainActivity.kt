@@ -1,5 +1,6 @@
 package by.huk.crypto_currencies
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
