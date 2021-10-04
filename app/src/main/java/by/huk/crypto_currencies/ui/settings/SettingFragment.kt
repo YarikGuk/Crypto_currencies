@@ -11,7 +11,7 @@ import by.huk.crypto_currencies.databinding.FragmentSettingsBinding
 
 class SettingFragment : Fragment() {
 
-    private lateinit var settingViewModel: SettingViewModel
+
     private var _binding: FragmentSettingsBinding? = null
 
     private val binding get() = _binding!!
@@ -21,8 +21,6 @@ class SettingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        settingViewModel =
-            ViewModelProvider(this).get(SettingViewModel::class.java)
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
 
