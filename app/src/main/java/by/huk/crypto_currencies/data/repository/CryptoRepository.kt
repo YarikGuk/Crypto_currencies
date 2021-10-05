@@ -17,9 +17,8 @@ class CryptoRepository(
     val ioScope = CoroutineScope(Dispatchers.IO)
 
 
-    suspend fun loadCryptoList(vsCurrency: String, order: String, perPage: Int, page: Int, sparkline: Boolean, priceChange: String,
-    ): List<CryptoEntity> {
-        return cryptoDataSource.getCryptoList(vsCurrency, order, perPage, page, sparkline, priceChange)
+    suspend fun loadCryptoList(order: String, page: Int): List<CryptoEntity> {
+        return cryptoDataSource.getCryptoList(order, page)
     }
     fun insertCryptoList(list: List<CryptoEntity>){
         ioScope.launch { dao.insertList(list) }

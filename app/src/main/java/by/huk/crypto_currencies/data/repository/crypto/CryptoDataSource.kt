@@ -10,8 +10,8 @@ class CryptoDataSource (
     ) {
 
 
-    suspend fun getCryptoList(vsCurrency:String,order:String,perPage:Int,page: Int,sparkline:Boolean,priceChange:String): List<CryptoEntity> {
-        val response = cryptoApi.getCryptoCurrencyList(vsCurrency,order,perPage,page,sparkline,priceChange)
+    suspend fun getCryptoList(order: String,page: Int): List<CryptoEntity> {
+        val response = cryptoApi.getCryptoCurrencyList(order,page)
 
         return if (response.isSuccessful) {
             response.body()?.map {

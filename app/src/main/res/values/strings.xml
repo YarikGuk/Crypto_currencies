@@ -8,4 +8,9 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="date_of_birth">Date of Birth</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="by_price">By price</string>
+    <string name="by_volume">By volume</string>
+    <string name="by_market_cap">By market capitalization</string>
 </resources>

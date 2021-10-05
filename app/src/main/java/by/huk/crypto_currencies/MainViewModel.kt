@@ -1,13 +1,12 @@
 package by.huk.crypto_currencies
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
 import by.huk.crypto_currencies.data.repository.CryptoRepository
-import by.huk.crypto_currencies.data.repository.crypto.CryptoDataSource
-import by.huk.crypto_currencies.data.source.dto.mappers.CryptoResponseMapper
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
 
 class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
 
@@ -27,35 +26,17 @@ class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
     val page: LiveData<Int> = _page
 
 
-    fun loadNextPage(
-        vsCurrency: String,
-        order: String,
-        perPage: Int,
-        sparkline: Boolean,
-        priceChange: String,
-    ) {
+    fun loadNextPage(order: String) {
         _page.value = _page.value?.inc()
-        loadCryptoList(vsCurrency, order, perPage, page.value!!, sparkline, priceChange)
+        loadCryptoList(order,page.value!!)
 
     }
 
-    fun loadCryptoList(
-        vsCurrency: String,
-        order: String,
-        perPage: Int,
-        page: Int,
-        sparkline: Boolean,
-        priceChange: String,
-    ) {
+    fun loadCryptoList(order: String, perPage: Int) {
         viewModelScope.launch {
             try {
                 _isLoading.postValue(true)
-                val result = repository.loadCryptoList(vsCurrency,
-                    order,
-                    perPage,
-                    page,
-                    sparkline,
-                    priceChange)
+                val result = repository.loadCryptoList(order, perPage)
                 _isLoading.postValue(false)
                 _initList.postValue(result)
             } catch (e: Exception) {
@@ -66,13 +47,19 @@ class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
 
 
     }
-    fun loadCryptoListFromDB(){
+
+    fun loadCryptoListFromDB() {
         _isLoading.value = true
         viewModelScope.launch {
-            val characterList  = repository.loadInitListFromDB()
+            val characterList = repository.loadInitListFromDB()
             _initList.postValue(characterList)
             _isLoading.postValue(false)
         }
     }
+
+    fun refreshPageCount() {
+        _page.value = 2
+    }
+
 
 }

@@ -2,6 +2,7 @@ package by.huk.crypto_currencies
 
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -22,11 +23,11 @@ class SpalshScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySpalshScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR
         binding.animSplashScreen.applyLoopingAnimatedVectorDrawable(R.drawable.custom_progressbar_anim)
 
-        viewModel.loadCryptoList(USD, SORT_BY_MARKET_CAP, 20, 1, true, PRICE_CHANGE)
-        val a = viewModel.initList.value.toString()
-        Log.e("TAG",a)
+        viewModel.loadCryptoList(SORT_BY_MARKET_CAP, 1)
+
         viewModel.initList.observe(this) {
             viewModel.insertInitListToDB(it)
             startActivity(Intent(this, MainActivity::class.java))

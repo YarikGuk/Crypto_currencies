@@ -9,36 +9,49 @@ import by.huk.crypto_currencies.MainViewModel
 import by.huk.crypto_currencies.R
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
 import by.huk.crypto_currencies.databinding.ItemCryptoBinding
-import by.huk.crypto_currencies.ui.utils.PRICE_CHANGE
-import by.huk.crypto_currencies.ui.utils.SORT_BY_MARKET_CAP
-import by.huk.crypto_currencies.ui.utils.USD
+import by.huk.crypto_currencies.ui.utils.*
 import com.squareup.picasso.Picasso
 
-class CryptoAdapter(val viewModel: MainViewModel):RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
+class CryptoAdapter(val viewModel: MainViewModel) :
+    RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
 
+    var sort = 0
     private var cryptoList = ArrayList<CryptoEntity>()
 
     fun initialize(list: List<CryptoEntity>) {
-        if(cryptoList.isNullOrEmpty()) {
+        if (cryptoList.isNullOrEmpty()) {
             cryptoList = list.toMutableList() as ArrayList<CryptoEntity>
-        }else{
+        } else {
             cryptoList.addAll(list.toMutableList() as ArrayList<CryptoEntity>)
         }
         notifyDataSetChanged()
     }
+    fun refreshList(checkedItem: Int) {
+        cryptoList.clear()
+        sort = checkedItem
+        notifyDataSetChanged()
+    }
 
 
-    inner class CryptoViewHolder(private val binding: ItemCryptoBinding):
-    RecyclerView.ViewHolder(binding.root){
+    inner class CryptoViewHolder(private val binding: ItemCryptoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(itemView:View,position: Int){
+        fun bind(itemView: View, position: Int) {
+
             val cryptoItem = cryptoList[position]
 
             binding.token = cryptoItem
             Picasso.get().load(cryptoItem.image).error(R.drawable.ic_money).into(binding.itemIcon)
-            binding.itemPrice.text = String.format("%.2f",cryptoItem.currentPrice)
+            binding.itemPrice.text = String.format("%.2f", cryptoItem.currentPrice)
 
-            if (position == cryptoList.lastIndex) viewModel.loadNextPage(USD,SORT_BY_MARKET_CAP,20,true,PRICE_CHANGE)
+
+            if (position == cryptoList.lastIndex) {
+                when (sort) {
+                    0 -> viewModel.loadNextPage(SORT_BY_MARKET_CAP)
+                    1 -> viewModel.loadNextPage(SORT_BY_PRICE)
+                    2 -> viewModel.loadNextPage(SORT_BY_VOLUME)
+                }
+            }
 
 
         }
@@ -47,17 +60,25 @@ class CryptoAdapter(val viewModel: MainViewModel):RecyclerView.Adapter<CryptoAda
     }
 
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int, ): CryptoAdapter.CryptoViewHolder {
-        val binding = DataBindingUtil.inflate<ItemCryptoBinding>(LayoutInflater.from(parent.context),R.layout.item_crypto,parent,false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): CryptoAdapter.CryptoViewHolder {
+        val binding =
+            DataBindingUtil.inflate<ItemCryptoBinding>(LayoutInflater.from(parent.context),
+                R.layout.item_crypto,
+                parent,
+                false)
         return CryptoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CryptoAdapter.CryptoViewHolder, position: Int) {
-        holder.bind(holder.itemView,position)
+        holder.bind(holder.itemView, position)
     }
 
     override fun getItemCount(): Int {
         return cryptoList.size
     }
+
+
 }
