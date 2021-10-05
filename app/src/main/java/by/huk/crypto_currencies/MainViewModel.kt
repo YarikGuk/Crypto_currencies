@@ -11,10 +11,6 @@ import org.koin.java.KoinJavaComponent.inject
 
 class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
 
-
-
-
-
     private val _initList = MutableLiveData<List<CryptoEntity>>()
     val initList: LiveData<List<CryptoEntity>> = _initList
 
@@ -69,6 +65,14 @@ class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
         }
 
 
+    }
+    fun loadCryptoListFromDB(){
+        _isLoading.value = true
+        viewModelScope.launch {
+            val characterList  = repository.loadInitListFromDB()
+            _initList.postValue(characterList)
+            _isLoading.postValue(false)
+        }
     }
 
 }

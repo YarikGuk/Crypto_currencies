@@ -4,7 +4,6 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.dsl.module
 
 class Application : Application(){
     override fun onCreate() {
@@ -13,7 +12,7 @@ class Application : Application(){
         startKoin{
             androidLogger()
             androidContext(this@Application)
-            modules(appModule, networkModule, apiModule, viewModelModule)
+            modules(dataSourceModule, networkModule, apiModule, viewModelModule)
         }
 
     }

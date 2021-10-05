@@ -3,6 +3,7 @@ package by.huk.crypto_currencies
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
@@ -21,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
 
    private val viewModel by inject<MainViewModel>()
-    private val cryptoRepository by inject<CryptoRepository>()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +36,8 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
-//        val appBarConfiguration = AppBarConfiguration(setOf(
-//            R.id.navigation_home, R.id.navigation_setting))
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-
         viewModel.exception.observe(this){
-            Log.e("TAG",it.toString())
+            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
         }
 
 

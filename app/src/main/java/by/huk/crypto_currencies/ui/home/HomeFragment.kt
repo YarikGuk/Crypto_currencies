@@ -37,25 +37,16 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.anim.setBackgroundResource(R.drawable.custom_progressbar_anim)
-        val anim = binding.anim.background as AnimatedVectorDrawable
+
 
         val adapter = CryptoAdapter(viewModel)
         binding.recyclerContainer.adapter = adapter
 
-
-
-
-        viewModel.loadCryptoList(USD, SORT_BY_MARKET_CAP, 20, 2, true, PRICE_CHANGE)
+        viewModel.loadCryptoListFromDB()
 
         viewModel.initList.observe(requireActivity()) {
-            Log.e("TAG", it.toString())
             adapter.initialize(it)
 
-        }
-        viewModel.isLoading.observe(requireActivity()) {
-            binding.isLoading = it
-            if (it == true) anim.start()
         }
 
 
