@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
+import by.huk.crypto_currencies.data.entities.user.User
 import by.huk.crypto_currencies.data.repository.CryptoRepository
 import kotlinx.coroutines.launch
 
@@ -36,4 +37,5 @@ class SplashViewModel(val repository: CryptoRepository) : ViewModel() {
     fun insertInitListToDB(list:List<CryptoEntity>){
         repository.insertCryptoList(list)
     }
+
 }

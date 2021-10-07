@@ -1,6 +1,7 @@
 package by.huk.crypto_currencies.data.repository
 
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
+import by.huk.crypto_currencies.data.entities.user.User
 import by.huk.crypto_currencies.data.repository.crypto.CryptoDataSource
 import by.huk.crypto_currencies.data.source.db.dao.CryptoDao
 import by.huk.crypto_currencies.data.source.db.database.CryptoDatabase
@@ -23,7 +24,17 @@ class CryptoRepository(
     fun insertCryptoList(list: List<CryptoEntity>){
         ioScope.launch { dao.insertList(list) }
     }
+    fun insertUser(user: User){
+        ioScope.launch { dao.insertUser(user) }
+    }
+    fun updateUser(user: User){
+        ioScope.launch { dao.updateUser(user) }
+    }
     suspend fun loadInitListFromDB():List<CryptoEntity>{
         return ioScope.async { dao.loadInitList() }.await()
     }
+    suspend fun loadUserFromDB():User{
+        return ioScope.async { dao.loadUser() }.await()
+    }
+
 }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.res.colorResource
 import androidx.fragment.app.Fragment
 import by.huk.crypto_currencies.MainViewModel
 import by.huk.crypto_currencies.R
@@ -55,9 +56,6 @@ class HomeFragment : Fragment() {
 
         viewModel.initList.observe(requireActivity()) {
           adapter.initialize(it)
-        }
-        viewModel.page.observe(requireActivity()) {
-          Log.e("TAG",it.toString())
         }
 
 
