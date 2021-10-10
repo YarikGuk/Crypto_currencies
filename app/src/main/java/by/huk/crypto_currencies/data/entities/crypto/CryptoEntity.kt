@@ -1,12 +1,15 @@
 package by.huk.crypto_currencies.data.entities.crypto
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import by.huk.crypto_currencies.data.source.db.database.SparklineTypeConverter
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "crypto_list")
 data class CryptoEntity(
     @PrimaryKey(autoGenerate = false)
@@ -23,4 +26,4 @@ data class CryptoEntity(
     @TypeConverters(SparklineTypeConverter::class)
     val sparklineIn7d: List<Double>,
 
-)
+) : Parcelable

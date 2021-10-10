@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
+import by.huk.crypto_currencies.data.entities.user.User
 import by.huk.crypto_currencies.data.source.db.dao.CryptoDao
 
-@Database(entities = [CryptoEntity::class], version = 1)
+@Database(entities = [CryptoEntity::class,User::class], version = 1)
 @TypeConverters(SparklineTypeConverter::class)
 abstract class CryptoDatabase : RoomDatabase() {
     abstract fun cryptoDao(): CryptoDao

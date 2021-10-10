@@ -9,12 +9,27 @@
         android:id="@+id/navigation_home"
         android:name="by.huk.crypto_currencies.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/show_detailsFragment"
+            app:destination="@id/detailsFragment" >
+
+        </action>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_setting"
         android:name="by.huk.crypto_currencies.ui.settings.SettingFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="by.huk.crypto_currencies.ui.details.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="coin"
+            app:argType="by.huk.crypto_currencies.data.entities.crypto.CryptoEntity" />
+    </fragment>
 
 </navigation>

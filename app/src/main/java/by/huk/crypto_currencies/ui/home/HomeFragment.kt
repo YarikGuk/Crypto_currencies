@@ -7,63 +7,87 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import by.huk.crypto_currencies.MainViewModel
 import by.huk.crypto_currencies.R
-import by.huk.crypto_currencies.data.repository.CryptoRepository
 import by.huk.crypto_currencies.databinding.FragmentHomeBinding
-import by.huk.crypto_currencies.ui.utils.PRICE_CHANGE
-import by.huk.crypto_currencies.ui.utils.SORT_BY_MARKET_CAP
-import by.huk.crypto_currencies.ui.utils.USD
+import by.huk.crypto_currencies.ui.utils.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 
 
 class HomeFragment : Fragment() {
 
     private val viewModel by inject<MainViewModel>()
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeBinding
 
-    override fun onCreateView(
+        override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.anim.setBackgroundResource(R.drawable.custom_progressbar_anim)
         val anim = binding.anim.background as AnimatedVectorDrawable
 
+
         val adapter = CryptoAdapter(viewModel)
         binding.recyclerContainer.adapter = adapter
+        waitForTransition(binding.recyclerContainer)
 
 
-
-
-        viewModel.loadCryptoList(USD, SORT_BY_MARKET_CAP, 20, 2, true, PRICE_CHANGE)
-
-        viewModel.initList.observe(requireActivity()) {
-            Log.e("TAG", it.toString())
-            adapter.initialize(it)
-
-        }
         viewModel.isLoading.observe(requireActivity()) {
             binding.isLoading = it
             if (it == true) anim.start()
+
+        }
+
+        viewModel.initList.observe(requireActivity()) {
+          adapter.initialize(it)
         }
 
 
-    }
+        fun refreshList() {
+            adapter.refreshList(viewModel.checkedItem)
+            viewModel.refreshPageCount()
+            when (viewModel.checkedItem) {
+                0 -> viewModel.loadCryptoList(SORT_BY_MARKET_CAP, 1)
+                1 -> viewModel.loadCryptoList(SORT_BY_PRICE, 1)
+                2 -> viewModel.loadCryptoList(SORT_BY_VOLUME, 1)
+            }
+        }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+
+        val singleItems = arrayOf(getString(R.string.by_market_cap),getString(R.string.by_price), getString(R.string.by_volume))
+        binding.mainToolbar.menu.findItem(R.id.item_sort).setOnMenuItemClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(resources.getString(R.string.sort))
+                .setNegativeButton(resources.getString(R.string.cancel)) {dialog, _ ->
+                    dialog.cancel()
+                }
+                .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+                    refreshList()
+                }
+                .setSingleChoiceItems(singleItems, viewModel.checkedItem) { _, which ->
+                    viewModel.checkedItem = which
+                }
+                .show()
+            true
+        }
+
+        binding.swipeToRefresh.setOnRefreshListener {
+            refreshList()
+            binding.swipeToRefresh.isRefreshing = false
+        }
+
+
+
     }
+
 }

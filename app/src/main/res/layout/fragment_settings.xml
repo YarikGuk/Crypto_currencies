@@ -7,7 +7,7 @@
     tools:context=".ui.settings.SettingFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/main_toolbar"
+        android:id="@+id/setting_toolbar"
         android:background="@color/primary"
         android:layout_width="match_parent"
         app:title="@string/title_settings"
@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/margin_normal"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_person"
-        app:layout_constraintTop_toBottomOf="@+id/main_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/setting_toolbar"
         tools:layout_editor_absoluteX="16dp" />
 
     <ImageView
@@ -84,13 +84,15 @@
         android:layout_marginTop="@dimen/margin_double"
         android:layout_marginHorizontal="@dimen/margin_double"
         android:hint="@string/date_of_birth"
+
         app:layout_constraintTop_toBottomOf="@+id/last_name_field">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/birthday_edittext"
             android:layout_width="match_parent"
+            android:focusable="false"
             android:layout_height="wrap_content"
-            android:inputType="date"/>
+            android:inputType="none"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
