@@ -1,10 +1,13 @@
 package by.huk.crypto_currencies.data.repository
 
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
+import by.huk.crypto_currencies.data.entities.crypto.MarketChart
 import by.huk.crypto_currencies.data.entities.user.User
 import by.huk.crypto_currencies.data.repository.crypto.CryptoDataSource
 import by.huk.crypto_currencies.data.source.db.dao.CryptoDao
 import by.huk.crypto_currencies.data.source.db.database.CryptoDatabase
+import com.google.android.material.transition.MaterialArcMotion
+import com.yabu.livechart.model.DataPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -20,6 +23,9 @@ class CryptoRepository(
 
     suspend fun loadCryptoList(order: String, page: Int): List<CryptoEntity> {
         return cryptoDataSource.getCryptoList(order, page)
+    }
+    suspend fun loadMarketChart(id:String,days:String,interval:String? = null): List<MarketChart> {
+        return cryptoDataSource.getMarketChart(id,days,interval)
     }
     fun insertCryptoList(list: List<CryptoEntity>){
         ioScope.launch { dao.insertList(list) }

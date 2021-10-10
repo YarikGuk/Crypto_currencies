@@ -17,6 +17,7 @@ import by.huk.crypto_currencies.data.source.db.dao.CryptoDao_Impl
 import by.huk.crypto_currencies.data.source.db.database.CryptoDatabase
 import by.huk.crypto_currencies.data.source.db.database.CryptoDatabase_Impl
 import by.huk.crypto_currencies.data.source.dto.mappers.CryptoResponseMapper
+import by.huk.crypto_currencies.data.source.dto.mappers.MarketChartResponseMapper
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -37,8 +38,8 @@ val viewModelModule = module {
 val dataSourceModule = module {
 
 
-    fun getDataSource(mapper:CryptoResponseMapper,service: CryptoService):CryptoDataSource{
-        return CryptoDataSource(mapper,service)
+    fun getDataSource(cryptoMapper:CryptoResponseMapper,marketChartResponseMapper: MarketChartResponseMapper,service: CryptoService):CryptoDataSource{
+        return CryptoDataSource(cryptoMapper,marketChartResponseMapper,service)
     }
     fun getCryptoRepository(dataSource: CryptoDataSource,dao: CryptoDao):CryptoRepository{
         return CryptoRepository(dataSource,dao)
@@ -53,8 +54,9 @@ val dataSourceModule = module {
 
 
     single { getCryptoRepository(get(),get())}
-    single { getDataSource(get(),get()) }
+    single { getDataSource(get(),get(),get()) }
     single { CryptoResponseMapper() }
+    single { MarketChartResponseMapper() }
 
     single { getCryptoDao(get()) }
     single { provideDB( androidContext() ) }

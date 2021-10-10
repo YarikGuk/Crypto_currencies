@@ -12,7 +12,10 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/show_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment" >
+
+        </action>
+
     </fragment>
 
     <fragment
@@ -23,6 +26,10 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="by.huk.crypto_currencies.ui.details.DetailsFragment"
-        android:label="DetailsFragment" />
+        android:label="DetailsFragment" >
+        <argument
+            android:name="coin"
+            app:argType="by.huk.crypto_currencies.data.entities.crypto.CryptoEntity" />
+    </fragment>
 
 </navigation>

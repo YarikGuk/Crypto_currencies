@@ -19,23 +19,17 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackground">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/item_cardview_icon"
+
+            <ImageView
+                android:id="@+id/item_icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="@dimen/margin_double"
-                app:cardCornerRadius="50dp"
+                android:elevation="@dimen/margin_normal"
+                android:src="@drawable/test_icon_btc"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/item_icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/test_icon_btc" />
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/item_crypto_symbol"
@@ -49,8 +43,8 @@
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/item_price"
-                app:layout_constraintStart_toEndOf="@+id/item_cardview_icon"
-                app:layout_constraintTop_toTopOf="@+id/item_cardview_icon" />
+                app:layout_constraintStart_toEndOf="@+id/item_icon"
+                app:layout_constraintTop_toTopOf="@+id/item_icon" />
 
             <TextView
                 android:id="@+id/item_crypto_name"
@@ -62,31 +56,22 @@
                 android:text="@{token.name}"
                 android:textColor="@color/gray_200"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/item_cardview_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/item_icon"
                 app:layout_constraintEnd_toStartOf="@+id/item_price"
                 app:layout_constraintStart_toStartOf="@+id/item_crypto_symbol"
                 app:layout_constraintTop_toBottomOf="@+id/item_crypto_symbol" />
 
-            <TextView
-                android:id="@+id/item_currency"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_double"
-                android:text="@string/dollar"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/item_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_normal"
                 android:gravity="end"
                 android:textSize="18sp"
+                android:transitionName="@{token.id}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_currency"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="@dimen/margin_double"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="9999999" />
 

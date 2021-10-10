@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
+import by.huk.crypto_currencies.data.entities.crypto.MarketChart
 import by.huk.crypto_currencies.data.entities.user.User
 import by.huk.crypto_currencies.data.repository.CryptoRepository
+import com.google.android.material.transition.MaterialArcMotion
+import com.yabu.livechart.model.DataPoint
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
@@ -17,8 +20,8 @@ class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean?>()
     val isLoading: LiveData<Boolean?> = _isLoading
 
-    private val _modifiedList = MutableLiveData<List<CryptoEntity>>()
-    val modifiedList: LiveData<List<CryptoEntity>> = _modifiedList
+    private val _chartList = MutableLiveData<List<MarketChart>>()
+    val chartList: LiveData<List<MarketChart>> = _chartList
 
     private val _exception = MutableLiveData<String>()
     val exception: LiveData<String> = _exception
@@ -29,6 +32,11 @@ class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
     private val _page = MutableLiveData(2)
     val page: LiveData<Int> = _page
 
+    var checkedItem = 0
+
+    init {
+        loadCryptoListFromDB()
+    }
 
     fun loadNextPage(order: String) {
         _page.value = _page.value?.inc()
@@ -51,8 +59,23 @@ class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
 
 
     }
+    fun loadMarketChart(id:String,days:String,interval:String? = null) {
+        viewModelScope.launch {
+            try {
+                _isLoading.postValue(true)
+                val result = repository.loadMarketChart(id,days,interval)
+                _isLoading.postValue(false)
+                _chartList.postValue(result)
+            } catch (e: Exception) {
+                _exception.postValue(e.message)
+                _isLoading.postValue(false)
+            }
+        }
 
-    fun loadCryptoListFromDB() {
+
+    }
+
+    private fun loadCryptoListFromDB() {
         _isLoading.value = true
         viewModelScope.launch {
             val characterList = repository.loadInitListFromDB()
@@ -79,6 +102,7 @@ class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
     fun refreshPageCount() {
         _page.value = 2
     }
+
 
 
 }

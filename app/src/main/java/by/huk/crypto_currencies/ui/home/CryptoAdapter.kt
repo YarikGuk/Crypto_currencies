@@ -1,21 +1,28 @@
 package by.huk.crypto_currencies.ui.home
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import by.huk.crypto_currencies.MainViewModel
 import by.huk.crypto_currencies.R
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
 import by.huk.crypto_currencies.databinding.ItemCryptoBinding
+import by.huk.crypto_currencies.ui.details.DetailsFragment
 import by.huk.crypto_currencies.ui.utils.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.squareup.picasso.Picasso
 
 class CryptoAdapter(val viewModel: MainViewModel) :
     RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
 
-    var sort = 0
+    var sort = viewModel.checkedItem
     private var cryptoList = ArrayList<CryptoEntity>()
 
     fun initialize(list: List<CryptoEntity>) {
@@ -40,9 +47,18 @@ class CryptoAdapter(val viewModel: MainViewModel) :
 
             val cryptoItem = cryptoList[position]
 
+
             binding.token = cryptoItem
-            Picasso.get().load(cryptoItem.image).error(R.drawable.ic_money).into(binding.itemIcon)
-            binding.itemPrice.text = String.format("%.2f", cryptoItem.currentPrice)
+            binding.itemPrice.text = String.format("%.2f", cryptoItem.currentPrice).plus("\t$")
+
+            binding.itemIcon.apply {
+                transitionName = cryptoItem.name
+                Glide.with(context)
+                    .load(cryptoItem.image)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(this)
+            }
+            binding.executePendingBindings()
 
 
             if (position == cryptoList.lastIndex) {
@@ -51,6 +67,18 @@ class CryptoAdapter(val viewModel: MainViewModel) :
                     1 -> viewModel.loadNextPage(SORT_BY_PRICE)
                     2 -> viewModel.loadNextPage(SORT_BY_VOLUME)
                 }
+            }
+
+
+
+            binding.cardView.setOnClickListener {
+                val direction = HomeFragmentDirections.showDetailsFragment(cryptoItem)
+                val extras = FragmentNavigatorExtras(
+                    binding.itemPrice to cryptoItem.id
+                )
+                itemView.findNavController().navigate(direction,extras)
+
+
             }
 
 

@@ -17,9 +17,6 @@ class SplashViewModel(val repository: CryptoRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean?>()
     val isLoading: LiveData<Boolean?> = _isLoading
 
-    private val _exception = MutableLiveData<String>()
-    val exception: LiveData<String> = _exception
-
     fun loadCryptoList(order: String,page: Int) {
         viewModelScope.launch {
             try {
@@ -28,7 +25,6 @@ class SplashViewModel(val repository: CryptoRepository) : ViewModel() {
                 _isLoading.postValue(false)
                 _initList.postValue(result)
             } catch (e: Exception) {
-                _exception.postValue(e.message)
                 _isLoading.postValue(false)
             }
         }

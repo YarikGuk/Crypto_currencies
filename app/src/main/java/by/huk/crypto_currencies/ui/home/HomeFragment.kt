@@ -18,17 +18,14 @@ import org.koin.android.ext.android.inject
 class HomeFragment : Fragment() {
 
     private val viewModel by inject<MainViewModel>()
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
-    private var checkedItem = 0
-
+    private lateinit var binding: FragmentHomeBinding
 
         override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -41,9 +38,7 @@ class HomeFragment : Fragment() {
 
         val adapter = CryptoAdapter(viewModel)
         binding.recyclerContainer.adapter = adapter
-
-        viewModel.loadCryptoListFromDB()
-
+        waitForTransition(binding.recyclerContainer)
 
 
         viewModel.isLoading.observe(requireActivity()) {
@@ -58,9 +53,9 @@ class HomeFragment : Fragment() {
 
 
         fun refreshList() {
-            adapter.refreshList(checkedItem)
+            adapter.refreshList(viewModel.checkedItem)
             viewModel.refreshPageCount()
-            when (checkedItem) {
+            when (viewModel.checkedItem) {
                 0 -> viewModel.loadCryptoList(SORT_BY_MARKET_CAP, 1)
                 1 -> viewModel.loadCryptoList(SORT_BY_PRICE, 1)
                 2 -> viewModel.loadCryptoList(SORT_BY_VOLUME, 1)
@@ -79,8 +74,8 @@ class HomeFragment : Fragment() {
                 .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
                     refreshList()
                 }
-                .setSingleChoiceItems(singleItems, checkedItem) { _, which ->
-                    checkedItem = which
+                .setSingleChoiceItems(singleItems, viewModel.checkedItem) { _, which ->
+                    viewModel.checkedItem = which
                 }
                 .show()
             true
@@ -95,11 +90,4 @@ class HomeFragment : Fragment() {
 
     }
 
-
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

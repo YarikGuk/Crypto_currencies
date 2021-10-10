@@ -28,6 +28,7 @@ class SpalshScreen : AppCompatActivity() {
 
         viewModel.loadCryptoList(SORT_BY_MARKET_CAP, 1)
 
+
         viewModel.initList.observe(this) {
             viewModel.insertInitListToDB(it)
             startActivity(Intent(this, MainActivity::class.java))

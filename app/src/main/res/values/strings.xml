@@ -2,7 +2,7 @@
     <string name="app_name">Cryptocurrencies</string>
     <string name="title_home">Main</string>
     <string name="title_settings">Settings</string>
-    <string name="dollar">$</string>
+    <string name="dollar">\u0020$\u0020</string>
     <string name="sort">Sort</string>
     <string name="save">Save</string>
     <string name="first_name">First name</string>
@@ -17,4 +17,15 @@
     <string name="pick_from_gallery">Pick from gallery</string>
     <string name="saved">Saved!</string>
     <string name="download_photo">Download photo</string>
+    <string name="_24h">24H</string>
+    <string name="_1w">1W</string>
+    <string name="_1m">1M</string>
+    <string name="_1y">1Y</string>
+    <string name="all">ALL</string>
+    <string name="market_cap">Market cap</string>
+    <string name="percent">\u0020%</string>
+    <string name="plus">+</string>
+    <string name="billion">\u0020B</string>
+
+
 </resources>
