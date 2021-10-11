@@ -69,6 +69,7 @@ class SettingFragment : Fragment() {
 
 
 
+
         viewModel.loadUser()
         viewModel.user.observe(requireActivity()) {
             user = it
