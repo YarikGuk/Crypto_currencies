@@ -170,7 +170,7 @@ class SettingFragment : Fragment() {
     }
 
     private fun fillFields(user: User) {
-        Glide.with(this).load(user.photo).into(binding.userPhoto)
+        Glide.with(this).load(user.photo).error(R.drawable.ic_person).into(binding.userPhoto)
         binding.firstNameEdittext.setText(user.firstName)
         binding.lastNameEdittext.setText(user.secondName)
         binding.birthdayEdittext.setText(user.birthday)

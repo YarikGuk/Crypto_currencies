@@ -36,8 +36,7 @@
                     android:id="@+id/symbol_toolbar"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    tools:src="@drawable/test_icon_btc" />
+                    android:layout_gravity="center" />
 
                 <TextView
                     android:id="@+id/name"
