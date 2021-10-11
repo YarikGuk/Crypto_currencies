@@ -33,7 +33,7 @@ import java.io.File
 import java.text.DateFormat.getDateInstance
 import java.util.*
 
-
+// TODO !REFACTORING! Remove unused imports in all classes
 class SettingFragment : Fragment() {
 
 
@@ -66,7 +66,8 @@ class SettingFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // TODO !REFACTORING! You have a lot of empеy spaces between lines. It does not make sense and
+        //  it only increases amount of lines and class size
 
 
 
@@ -75,7 +76,7 @@ class SettingFragment : Fragment() {
             user = it
             fillFields(it)
         }
-
+        //TODO !REFACTORING! Use construction with(something) { } in all classes where it is possible
         binding.firstNameEdittext.doAfterTextChanged {
             firstNameIsFilled = it!!.isNotEmpty()
             fieldsIsFilled()
@@ -102,7 +103,7 @@ class SettingFragment : Fragment() {
             binding.birthdayEdittext.setText(DateFormat.getDateInstance().format(it))
         }
 
-        binding.birthdayEdittext.setOnClickListener{
+        binding.birthdayEdittext.setOnClickListener{ // TODO !REFACTORING! Use ctrl+alt+L hotkey fo code formatting in all classes
             datePicker.show(requireActivity().supportFragmentManager, "tag")
         }
 

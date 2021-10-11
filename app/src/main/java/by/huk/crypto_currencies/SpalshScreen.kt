@@ -12,13 +12,13 @@ import by.huk.crypto_currencies.ui.utils.SORT_BY_MARKET_CAP
 import by.huk.crypto_currencies.ui.utils.USD
 import by.huk.crypto_currencies.ui.utils.applyLoopingAnimatedVectorDrawable
 import org.koin.android.ext.android.inject
-
+// TODO !REFACTORING! Misprint
 class SpalshScreen : AppCompatActivity() {
 
 
     private lateinit var binding: ActivitySpalshScreenBinding
     private val viewModel by inject<SplashViewModel>()
-
+    // TODO !REFACTORING! it's better to use fragment instead of activity because we want to use single activity architecture
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySpalshScreenBinding.inflate(layoutInflater)

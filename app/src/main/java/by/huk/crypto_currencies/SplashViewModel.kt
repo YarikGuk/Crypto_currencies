@@ -8,9 +8,9 @@ import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
 import by.huk.crypto_currencies.data.entities.user.User
 import by.huk.crypto_currencies.data.repository.CryptoRepository
 import kotlinx.coroutines.launch
-
+//TODO !REFACTORING! Check IDE hints in classes
 class SplashViewModel(val repository: CryptoRepository) : ViewModel() {
-
+    //TODO !REFACTORING! We need to use Kotlin Flow instead of LiveData in all needed classes (it was described in technical task)
     private val _initList = MutableLiveData<List<CryptoEntity>>()
     val initList: LiveData<List<CryptoEntity>> = _initList
 

@@ -11,7 +11,7 @@ import by.huk.crypto_currencies.data.repository.CryptoRepository
 import com.google.android.material.transition.MaterialArcMotion
 import com.yabu.livechart.model.DataPoint
 import kotlinx.coroutines.launch
-
+//TODO !REFACTORING! Each fragment or activity has to have own viewmodel class
 class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
 
     private val _initList = MutableLiveData<List<CryptoEntity>>()
@@ -29,7 +29,7 @@ class MainViewModel(private val repository: CryptoRepository) : ViewModel() {
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> = _user
 
-    private val _page = MutableLiveData(2)
+    private val _page = MutableLiveData(2)  //TODO !REFACTORING! 2 it's a magic number. Need to move it to constant in the same class with informative name
     val page: LiveData<Int> = _page
 
     var checkedItem = 0

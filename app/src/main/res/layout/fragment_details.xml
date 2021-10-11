@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:orientation="horizontal">
-
+                <!-- TODO !REFACTORING! Don't forget to use @dimen in all xml files -->
                 <ImageView
                     android:id="@+id/symbol_toolbar"
                     android:layout_width="24dp"
