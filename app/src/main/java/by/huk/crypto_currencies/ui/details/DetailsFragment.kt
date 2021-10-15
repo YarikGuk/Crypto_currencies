@@ -1,55 +1,34 @@
 package by.huk.crypto_currencies.ui.details
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.withCreated
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import by.huk.crypto_currencies.MainViewModel
 import by.huk.crypto_currencies.R
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
 import by.huk.crypto_currencies.data.entities.crypto.MarketChart
 import by.huk.crypto_currencies.databinding.FragmentDetailsBinding
-import by.huk.crypto_currencies.ui.home.HomeFragmentDirections
-import by.huk.crypto_currencies.ui.utils.DAY
-import by.huk.crypto_currencies.ui.utils.MAX
-import by.huk.crypto_currencies.ui.utils.MONTH
-import by.huk.crypto_currencies.ui.utils.YEAR
+import by.huk.crypto_currencies.ui.utils.*
 import com.bumptech.glide.Glide
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.options.models.layoutOptions
-import com.tradingview.lightweightcharts.api.options.models.localizationOptions
-import com.tradingview.lightweightcharts.api.series.models.HistogramData
-import com.tradingview.lightweightcharts.api.series.models.Time
-import com.tradingview.lightweightcharts.api.series.models.WhitespaceData
-import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
-import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
-import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 import com.yabu.livechart.model.DataPoint
 import com.yabu.livechart.model.Dataset
 import com.yabu.livechart.view.LiveChart
 import com.yabu.livechart.view.LiveChartStyle
-import kotlinx.coroutines.*
-import okhttp3.Dispatcher
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 
 class DetailsFragment() : Fragment() {
 
-    private val viewModel by inject<MainViewModel>()
+    private val viewModel by inject<DetailsViewModel>()
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var items: Array<TextView>
     private var coin: CryptoEntity? = null
@@ -71,41 +50,41 @@ class DetailsFragment() : Fragment() {
 
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         coin = args.coin
-        binding.token = coin
-        items = arrayOf(binding.item24h, binding.item1w, binding.item1m, binding.item1y, binding.itemAll)
+        items = arrayOf(binding.item24h,
+            binding.item1w,
+            binding.item1m,
+            binding.item1y,
+            binding.itemAll)
 
-        binding.price.text = convertPrice(coin?.currentPrice!!)
-        binding.marketCap.text = convertPrice(coin?.marketCap!!)
-        binding.percent.text = convertPercent(coin?.priceChangePercentage24hInCurrency!!)
+        with(binding) {
+            token = coin
+            price.text = convertPrice(coin?.currentPrice!!)
+            marketCap.text = convertPrice(coin?.marketCap!!)
+            percent.text = convertPercent(coin?.priceChangePercentage24hInCurrency!!)
+            loadingAnim.setBackgroundResource(R.drawable.custom_progressbar_anim)
+        }
         Glide.with(this).load(coin?.image).into(binding.symbolToolbar)
-
-        binding.loadingAnim.setBackgroundResource(R.drawable.custom_progressbar_anim)
         val anim = binding.loadingAnim.background as AnimatedVectorDrawable
-
         binding.executePendingBindings()
 
         var sparkline = coin?.sparklineIn7d.orEmpty()
         val list = mutableListOf<DataPoint>()
-        for(i in sparkline.indices step 2){
-            list.add(DataPoint(i.toFloat(),sparkline[i].toFloat()))
+        for (i in sparkline.indices step 2) {
+            list.add(DataPoint(i.toFloat(), sparkline[i].toFloat()))
         }
         drawChart(list)
 
-
-        viewModel.isLoading.observe(requireActivity()){
+        viewModel.isLoading.onEach {
             binding.isLoading = it
-            if (it == true) anim.start()
-        }
+            if (it) anim.start()
+        }.launchWhenStarted(lifecycleScope)
 
-
-        viewModel.chartList.observe(requireActivity()){
-            drawChart(convertList(it))
-        }
-
+        viewModel.chartList.onEach {
+            if (it.isNotEmpty()) drawChart(convertList(it))
+        }.launchWhenStarted(lifecycleScope)
 
         binding.item24h.setOnClickListener {
             setBackgroundColor(0)
@@ -131,16 +110,17 @@ class DetailsFragment() : Fragment() {
         binding.detailsToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-
     }
-    private fun convertList(list: List<MarketChart>):MutableList<DataPoint>{
+
+    private fun convertList(list: List<MarketChart>): MutableList<DataPoint> {
         val dpList = mutableListOf<DataPoint>()
-        for (i in list.indices step 4){
-            dpList.add(DataPoint(i.toFloat(),list[i].price))
+        for (i in list.indices step 5) {
+            dpList.add(DataPoint(i.toFloat(), list[i].price))
         }
         return dpList
     }
-    private fun drawChart(list: MutableList<DataPoint>){
+
+    private fun drawChart(list: MutableList<DataPoint>) {
         val chart = binding.priceChart
         val style = LiveChartStyle().apply {
             mainColor = requireContext().getColor(R.color.second_anim_color)
@@ -152,7 +132,8 @@ class DetailsFragment() : Fragment() {
             .setOnTouchCallbackListener(object : LiveChart.OnTouchCallback {
                 override fun onTouchCallback(point: DataPoint) {
                     binding.viewPoint.visibility = View.VISIBLE
-                    binding.viewPoint.text = point.y.toString().plus(requireContext().getString(R.string.dollar))
+                    binding.viewPoint.text =
+                        point.y.toString().plus(requireContext().getString(R.string.dollar))
                 }
 
                 override fun onTouchFinished() {
@@ -162,6 +143,8 @@ class DetailsFragment() : Fragment() {
             .drawLastPointLabel()
             .drawSmoothPath()
             .drawDataset()
+
+
     }
 
     private fun convertPercent(percent: Double): String {
@@ -192,6 +175,5 @@ class DetailsFragment() : Fragment() {
         items[checkedItem].setBackgroundResource(R.drawable.shape_green)
         items[checkedItem].setTextColor(Color.WHITE)
     }
-
 
 }

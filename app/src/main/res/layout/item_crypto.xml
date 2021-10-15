@@ -11,7 +11,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="@dimen/card_height">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/card_view"
@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/item_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/margin_double"
                 android:elevation="@dimen/margin_normal"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +40,7 @@
                 android:maxLines="1"
                 android:text="@{token.symbol}"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="@dimen/card_text_large_size"
                 app:layout_constraintEnd_toStartOf="@+id/item_price"
                 app:layout_constraintStart_toEndOf="@+id/item_icon"
                 app:layout_constraintTop_toTopOf="@+id/item_icon" />
@@ -54,7 +54,7 @@
                 android:gravity="start"
                 android:text="@{token.name}"
                 android:textColor="@color/gray_200"
-                android:textSize="14sp"
+                android:textSize="@dimen/card_text_small_size"
                 app:layout_constraintBottom_toBottomOf="@+id/item_icon"
                 app:layout_constraintEnd_toStartOf="@+id/item_price"
                 app:layout_constraintStart_toStartOf="@+id/item_crypto_symbol"
@@ -66,7 +66,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:textSize="18sp"
+                android:textSize="@dimen/card_text_large_size"
                 android:transitionName="@{token.id}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +77,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/divider_height"
                 android:background="@color/gray_200"
                 app:layout_constraintBottom_toBottomOf="@+id/card_view" />
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,7 @@
     <ImageView
         android:id="@+id/user_photo"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="@dimen/image_view_height"
         android:layout_marginHorizontal="@dimen/margin_double"
         android:layout_marginTop="@dimen/margin_normal"
         android:scaleType="centerCrop"
@@ -90,8 +90,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/birthday_edittext"
             android:layout_width="match_parent"
-            android:focusable="false"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:inputType="none"/>
 
     </com.google.android.material.textfield.TextInputLayout>

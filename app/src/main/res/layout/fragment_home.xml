@@ -27,9 +27,10 @@
 
         <ImageView
             android:id="@+id/anim"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/progress_bar_middle_size"
+            android:layout_height="@dimen/progress_bar_middle_size"
             setVisibleGone="@{isLoading}"
+            android:elevation="@dimen/margin_normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

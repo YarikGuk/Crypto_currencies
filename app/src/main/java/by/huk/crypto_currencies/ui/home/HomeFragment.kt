@@ -2,32 +2,30 @@ package by.huk.crypto_currencies.ui.home
 
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import by.huk.crypto_currencies.MainViewModel
+import androidx.lifecycle.lifecycleScope
 import by.huk.crypto_currencies.R
 import by.huk.crypto_currencies.databinding.FragmentHomeBinding
 import by.huk.crypto_currencies.ui.utils.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 
 
 class HomeFragment : Fragment() {
-
-    private val viewModel by inject<MainViewModel>()
+    private val viewModel by inject<HomeViewModel>()
     private lateinit var binding: FragmentHomeBinding
 
-        override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,22 +33,18 @@ class HomeFragment : Fragment() {
         binding.anim.setBackgroundResource(R.drawable.custom_progressbar_anim)
         val anim = binding.anim.background as AnimatedVectorDrawable
 
-
         val adapter = CryptoAdapter(viewModel)
         binding.recyclerContainer.adapter = adapter
         waitForTransition(binding.recyclerContainer)
 
-
-        viewModel.isLoading.observe(requireActivity()) {
+        viewModel.isLoading.onEach {
             binding.isLoading = it
-            if (it == true) anim.start()
+            if (it) anim.start()
+        }.launchWhenStarted(lifecycleScope)
 
-        }
-
-        viewModel.initList.observe(requireActivity()) {
-          adapter.initialize(it)
-        }
-
+        viewModel.initList.onEach {
+            if (it.isNotEmpty()) adapter.initialize(it)
+        }.launchWhenStarted(lifecycleScope)
 
         fun refreshList() {
             adapter.refreshList(viewModel.checkedItem)
@@ -62,13 +56,13 @@ class HomeFragment : Fragment() {
             }
         }
 
-
-
-        val singleItems = arrayOf(getString(R.string.by_market_cap),getString(R.string.by_price), getString(R.string.by_volume))
+        val singleItems = arrayOf(getString(R.string.by_market_cap),
+            getString(R.string.by_price),
+            getString(R.string.by_volume))
         binding.mainToolbar.menu.findItem(R.id.item_sort).setOnMenuItemClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(resources.getString(R.string.sort))
-                .setNegativeButton(resources.getString(R.string.cancel)) {dialog, _ ->
+                .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                     dialog.cancel()
                 }
                 .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
@@ -80,14 +74,9 @@ class HomeFragment : Fragment() {
                 .show()
             true
         }
-
         binding.swipeToRefresh.setOnRefreshListener {
             refreshList()
             binding.swipeToRefresh.isRefreshing = false
         }
-
-
-
     }
-
 }

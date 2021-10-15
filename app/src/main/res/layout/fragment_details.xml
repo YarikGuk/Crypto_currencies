@@ -34,8 +34,8 @@
 
                 <ImageView
                     android:id="@+id/symbol_toolbar"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/margin_triple"
+                    android:layout_height="@dimen/margin_triple"
                     android:layout_gravity="center" />
 
                 <TextView
@@ -63,7 +63,7 @@
             android:layout_margin="@dimen/margin_triple"
             android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="35sp"
+            android:textSize="@dimen/text_size_large"
             android:transitionName="@{token.id}"
             app:layout_constraintTop_toBottomOf="@+id/details_toolbar"
             tools:layout_editor_absoluteX="24dp"
@@ -73,19 +73,18 @@
             android:id="@+id/percent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="@dimen/margin_half"
             android:gravity="center"
             android:textColor="@color/primary"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_middle"
             app:layout_constraintTop_toBottomOf="@+id/price"
-            tools:layout_editor_absoluteX="4dp"
             tools:text="+9999.9%" />
 
 
         <com.yabu.livechart.view.LiveChart
             android:id="@+id/price_chart"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="@dimen/image_view_height"
             app:layout_constraintTop_toBottomOf="@+id/percent" />
 
         <TextView
@@ -146,8 +145,8 @@
 
         <ImageView
             android:id="@+id/loading_anim"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/progress_bar_small_size"
+            android:layout_height="@dimen/progress_bar_small_size"
             setVisibleGone="@{isLoading}"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/price_chart"
@@ -157,7 +156,7 @@
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/divider_height"
             android:layout_marginHorizontal="@dimen/margin_double"
             android:layout_marginVertical="@dimen/margin_triple"
             android:background="@color/gray_200"
