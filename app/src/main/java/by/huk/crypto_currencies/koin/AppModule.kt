@@ -18,6 +18,9 @@ import by.huk.crypto_currencies.data.source.db.database.CryptoDatabase
 import by.huk.crypto_currencies.data.source.db.database.CryptoDatabase_Impl
 import by.huk.crypto_currencies.data.source.dto.mappers.CryptoResponseMapper
 import by.huk.crypto_currencies.data.source.dto.mappers.MarketChartResponseMapper
+import by.huk.crypto_currencies.ui.details.DetailsViewModel
+import by.huk.crypto_currencies.ui.home.HomeViewModel
+import by.huk.crypto_currencies.ui.settings.SettingViewModel
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -33,10 +36,12 @@ import retrofit2.create
 val viewModelModule = module {
     viewModel { MainViewModel(get())}
     viewModel { SplashViewModel(get())}
+    viewModel { DetailsViewModel(get())}
+    viewModel { HomeViewModel(get()) }
+    viewModel { SettingViewModel(get()) }
 }
 
 val dataSourceModule = module {
-
 
     fun getDataSource(cryptoMapper:CryptoResponseMapper,marketChartResponseMapper: MarketChartResponseMapper,service: CryptoService):CryptoDataSource{
         return CryptoDataSource(cryptoMapper,marketChartResponseMapper,service)
@@ -50,8 +55,6 @@ val dataSourceModule = module {
     fun getCryptoDao(db:CryptoDatabase):CryptoDao{
         return db.cryptoDao()
     }
-
-
 
     single { getCryptoRepository(get(),get())}
     single { getDataSource(get(),get(),get()) }

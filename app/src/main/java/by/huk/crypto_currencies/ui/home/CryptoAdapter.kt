@@ -1,11 +1,9 @@
 package by.huk.crypto_currencies.ui.home
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
@@ -13,13 +11,13 @@ import by.huk.crypto_currencies.MainViewModel
 import by.huk.crypto_currencies.R
 import by.huk.crypto_currencies.data.entities.crypto.CryptoEntity
 import by.huk.crypto_currencies.databinding.ItemCryptoBinding
-import by.huk.crypto_currencies.ui.details.DetailsFragment
-import by.huk.crypto_currencies.ui.utils.*
+import by.huk.crypto_currencies.ui.utils.SORT_BY_MARKET_CAP
+import by.huk.crypto_currencies.ui.utils.SORT_BY_PRICE
+import by.huk.crypto_currencies.ui.utils.SORT_BY_VOLUME
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.squareup.picasso.Picasso
 
-class CryptoAdapter(val viewModel: MainViewModel) :
+class CryptoAdapter(val viewModel: HomeViewModel) :
     RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
 
     var sort = viewModel.checkedItem
@@ -33,6 +31,7 @@ class CryptoAdapter(val viewModel: MainViewModel) :
         }
         notifyDataSetChanged()
     }
+
     fun refreshList(checkedItem: Int) {
         cryptoList.clear()
         sort = checkedItem
@@ -47,7 +46,6 @@ class CryptoAdapter(val viewModel: MainViewModel) :
 
             val cryptoItem = cryptoList[position]
 
-
             binding.token = cryptoItem
             binding.itemPrice.text = String.format("%.2f", cryptoItem.currentPrice).plus("\t$")
 
@@ -59,7 +57,6 @@ class CryptoAdapter(val viewModel: MainViewModel) :
                     .into(this)
             }
             binding.executePendingBindings()
-
 
             if (position == cryptoList.lastIndex) {
                 when (sort) {
@@ -76,17 +73,11 @@ class CryptoAdapter(val viewModel: MainViewModel) :
                 val extras = FragmentNavigatorExtras(
                     binding.itemPrice to cryptoItem.id
                 )
-                itemView.findNavController().navigate(direction,extras)
-
+                itemView.findNavController().navigate(direction, extras)
 
             }
-
-
         }
-
-
     }
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

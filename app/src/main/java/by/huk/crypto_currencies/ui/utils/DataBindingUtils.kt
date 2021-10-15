@@ -40,6 +40,7 @@ fun ImageView.applyLoopingAnimatedVectorDrawable(@DrawableRes avdResId: Int) {
     this.setImageDrawable(animated)
     animated?.start()
 }
+
 fun Fragment.waitForTransition(targetView: View) {
     postponeEnterTransition()
     targetView.doOnPreDraw { startPostponedEnterTransition() }

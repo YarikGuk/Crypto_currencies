@@ -5,4 +5,16 @@
     <dimen name="margin_double">16dp</dimen>
     <dimen name="margin_normal">8dp</dimen>
     <dimen name="margin_triple">24dp</dimen>
+    <dimen name="text_size_large">35sp</dimen>
+    <dimen name="text_size_middle">20sp</dimen>
+    <dimen name="margin_half">4dp</dimen>
+    <dimen name="image_view_height">300dp</dimen>
+    <dimen name="progress_bar_small_size">60dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="card_height">80dp</dimen>
+    <dimen name="icon_size">48dp</dimen>
+    <dimen name="card_text_large_size">18sp</dimen>
+    <dimen name="card_text_small_size">14sp</dimen>
+    <dimen name="progress_bar_middle_size">100dp</dimen>
+    <dimen name="progress_bar_large_size">150dp</dimen>
 </resources>
