@@ -10,12 +10,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.*
 
 class HomeViewModel(private val repository: CryptoRepository) : ViewModel() {
 
 
-    private val _initList = MutableStateFlow<List<CryptoEntity>>(emptyList())
-    val initList: StateFlow<List<CryptoEntity>> = _initList.asStateFlow()
+    private val _initList = MutableStateFlow(ListWrapper.NewList(emptyList()))
+    val initList: StateFlow<ListWrapper> = _initList
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -39,8 +40,8 @@ class HomeViewModel(private val repository: CryptoRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 val result = repository.loadCryptoList(order, perPage)
+                _initList.value = ListWrapper.NewList(result)
                 _isLoading.value = false
-                _initList.value = result
             } catch (e: Exception) {
                 _isLoading.value = false
             }
@@ -51,8 +52,8 @@ class HomeViewModel(private val repository: CryptoRepository) : ViewModel() {
     private fun loadCryptoListFromDB() {
         _isLoading.value = true
         viewModelScope.launch {
-            val characterList = repository.loadInitListFromDB()
-            _initList.value = characterList
+            val cryptoList = repository.loadInitListFromDB()
+            _initList.value = ListWrapper.NewList(cryptoList)
             _isLoading.value = false
         }
     }
@@ -62,4 +63,19 @@ class HomeViewModel(private val repository: CryptoRepository) : ViewModel() {
     }
 
 
+    sealed class ListWrapper{
+        data class NewList(val list: List<CryptoEntity>): ListWrapper(){
+
+            override fun equals(other: Any?): Boolean {
+                return false
+            }
+
+            override fun hashCode(): Int {
+                return Random().nextInt()
+            }
+
+        }
+
+    }
 }
+

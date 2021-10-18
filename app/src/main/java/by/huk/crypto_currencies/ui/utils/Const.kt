@@ -13,6 +13,6 @@ const val MONTH = "30"
 const val YEAR = "365"
 
 const val FIRST_PAGE = 1
-const val SECOND_PAGE = 1
+const val SECOND_PAGE = 2
 
 

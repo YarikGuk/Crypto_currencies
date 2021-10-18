@@ -43,7 +43,8 @@ class HomeFragment : Fragment() {
         }.launchWhenStarted(lifecycleScope)
 
         viewModel.initList.onEach {
-            if (it.isNotEmpty()) adapter.initialize(it)
+            if (it is HomeViewModel.ListWrapper.NewList)
+                if (it.list.isNotEmpty()) adapter.initialize(it.list)
         }.launchWhenStarted(lifecycleScope)
 
         fun refreshList() {
