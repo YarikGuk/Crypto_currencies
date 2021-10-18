@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.yabu.livechart.model.Dataset
 import com.yabu.livechart.view.LiveChart
 import com.yabu.livechart.view.LiveChartStyle
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class DetailsFragment() : Fragment() {
@@ -121,29 +123,30 @@ class DetailsFragment() : Fragment() {
     }
 
     private fun drawChart(list: MutableList<DataPoint>) {
+
         val chart = binding.priceChart
+
         val style = LiveChartStyle().apply {
             mainColor = requireContext().getColor(R.color.second_anim_color)
             pathStrokeWidth = 8f
         }
+            chart.setDataset(Dataset(list))
+                .setLiveChartStyle(style)
+                .disableTouchOverlay()
+                .setOnTouchCallbackListener(object : LiveChart.OnTouchCallback {
+                    override fun onTouchCallback(point: DataPoint) {
+                        binding.viewPoint.visibility = View.VISIBLE
+                        binding.viewPoint.text =
+                            point.y.toString().plus(requireContext().getString(R.string.dollar))
+                    }
 
-        chart.setDataset(Dataset(list))
-            .setLiveChartStyle(style)
-            .setOnTouchCallbackListener(object : LiveChart.OnTouchCallback {
-                override fun onTouchCallback(point: DataPoint) {
-                    binding.viewPoint.visibility = View.VISIBLE
-                    binding.viewPoint.text =
-                        point.y.toString().plus(requireContext().getString(R.string.dollar))
-                }
-
-                override fun onTouchFinished() {
-                    binding.viewPoint.visibility = View.GONE
-                }
-            })
-            .drawLastPointLabel()
-            .drawSmoothPath()
-            .drawDataset()
-
+                    override fun onTouchFinished() {
+                        binding.viewPoint.visibility = View.GONE
+                    }
+                })
+                .drawLastPointLabel()
+                .drawSmoothPath()
+                .drawDataset()
 
     }
 
