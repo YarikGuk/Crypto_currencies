@@ -1,7 +1,7 @@
 # Crypto_currencies
 Test app
 
-Description:\n
+Description:\\n
 MVVM architecture
 Coroutines
 Kotlin flow
