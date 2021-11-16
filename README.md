@@ -1,10 +1,12 @@
 # Crypto_currencies
-Test app
+## Test app
 
-Description:\\n
-MVVM architecture
-Coroutines
-Kotlin flow
-Retrofit
-Navigation component
-Room
+Description:
+<br/>  MVVM architecture
+<br/>Coroutines
+<br/>Kotlin flow
+<br/>Retrofit
+<br/>Navigation component
+<br/>Room
+
+  
