@@ -1,7 +1,7 @@
 # Crypto_currencies
 ## Test app
 
-Description:
+Technologies:
 <br/>  MVVM architecture
 <br/>Coroutines
 <br/>Kotlin flow
